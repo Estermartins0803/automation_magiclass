@@ -1,0 +1,5 @@
+faker
+setuptools
+robotframework
+robotframework-faker
+robotframework-seleniumlibrary
