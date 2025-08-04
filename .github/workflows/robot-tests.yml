@@ -26,6 +26,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Firefox via snap
+        run: sudo snap install firefox
+
+      - name: Add snap to PATH
+        run: echo "/snap/bin" >> $GITHUB_PATH
+
       - name: Download geckodriver for Linux
         run: |
           GECKO_VER=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep "tag_name" | cut -d '"' -f 4)
@@ -34,11 +40,9 @@ jobs:
           chmod +x geckodriver
           sudo mv geckodriver /usr/local/bin/
 
-      - name: Install Firefox
-        run: sudo apt-get update && sudo apt-get install -y firefox
-
       - name: Check Firefox version
         run: firefox --version
+
 
 
       - name: Run Robot Framework Tests
