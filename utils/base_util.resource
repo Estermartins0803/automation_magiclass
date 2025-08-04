@@ -5,7 +5,7 @@ Resource    ../variables/base_variables.resource
 
 *** Keywords ***
 Open site
-    Open Browser    url=${url}    browser=firefox
+    Open Browser    url=${url}    browser=chrome
     Maximize Browser Window
 
 Close site
