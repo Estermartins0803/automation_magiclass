@@ -26,11 +26,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Make geckodriver executable
-        run: chmod +x ./drivers/geckodriver
-
-      - name: Add geckodriver to PATH
-        run: echo "${{ github.workspace }}/drivers" >> $GITHUB_PATH
+      - name: Download geckodriver for Linux
+        run: |
+          GECKO_VER=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | grep "tag_name" | cut -d '"' -f 4)
+          wget https://github.com/mozilla/geckodriver/releases/download/$GECKO_VER/geckodriver-$GECKO_VER-linux64.tar.gz
+          tar -xzf geckodriver-$GECKO_VER-linux64.tar.gz
+          chmod +x geckodriver
+          sudo mv geckodriver /usr/local/bin/
 
       - name: Install Firefox
         run: sudo apt-get update && sudo apt-get install -y firefox
