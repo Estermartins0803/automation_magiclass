@@ -39,11 +39,14 @@ jobs:
       - name: Install ChromeDriver
         run: |
           CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -1)
-          DRIVER_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" | jq -r ".versions[] | select(.version | startswith(\"$CHROME_VERSION\")) | .downloads.chromedriver[] | select(.platform == \"linux64\").url" | head -1)
-          wget "$DRIVER_VERSION" -O chromedriver.zip
+          DRIVER_URL=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" \
+            | jq -r ".versions[] | select(.version | startswith(\"$CHROME_VERSION\")) \
+            | .downloads.chromedriver[] | select(.platform == \"linux64\").url" | head -1)
+          wget "$DRIVER_URL" -O chromedriver.zip
           unzip chromedriver.zip
-          sudo mv chromedriver /usr/local/bin/
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           chmod +x /usr/local/bin/chromedriver
+
 
       # Roda os testes Robot Framework no Chrome
       - name: Run Robot Framework Tests
